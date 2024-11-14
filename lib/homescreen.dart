@@ -14,7 +14,7 @@ class _HomescreenState extends State<Homescreen> {
     try {
       await FirebaseAuth.instance.signOut();
 
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
     } catch (e) {
       print('Error signing out: $e');
     }

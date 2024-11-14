@@ -1,14 +1,18 @@
 import 'package:file_authentication/forget_password.dart';
 import 'package:file_authentication/homescreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:file_authentication/forget_password.dart';
+import 'package:file_authentication/homescreen.dart';
 import 'package:flutter/material.dart';
 
-class Login extends StatefulWidget {
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginPageState extends State<LoginPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
@@ -51,74 +55,65 @@ class _LoginState extends State<Login> {
           Container(
             height: 400,
             decoration: BoxDecoration(
-              image: DecorationImage(image: AssetImage("assets/images/Untitled.jpeg")),
+                image: DecorationImage(
+                    image: AssetImage("assets/images/download (6).jpeg"),
+                    fit: BoxFit.cover)),
+          ),
+          SizedBox(height: 20),
+          SizedBox(
+            height: 40,
+            width: 300,
+            child: TextField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15))),
             ),
           ),
+          SizedBox(height: 20),
           SizedBox(
-            height: 30,
-          ),
-          SizedBox(
-              height: 40,
-              width: 300,
-              child: TextField(
+            height: 40,
+            width: 300,
+            child: TextField(
+                controller: _passwordController,
+                obscureText: true,
                 decoration: InputDecoration(
-                    label: Text("Email"),
+                    labelText: 'Password',
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15))),
-              )),
-          SizedBox(
-            height: 20,
+                        borderRadius: BorderRadius.circular(15)))),
           ),
+          SizedBox(height: 55),
           SizedBox(
-              height: 40,
-              width: 300,
-              child: TextField(
-                decoration: InputDecoration(
-                    label: Text("Password"),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15))),
-              )),
-          SizedBox(height: 50),
-          SizedBox(
-              height: 40,
-              width: 300,
-              child: ElevatedButton(
-                  onPressed: () {
-                    _signIn();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Homescreen()));
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
-                      foregroundColor: Colors.white),
-                  child: Text(
-                    "Login",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ))),
-          SizedBox(
-            height: 30,
+            height: 40,
+            width: 300,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 54, 57, 244),
+                  foregroundColor: Colors.white),
+              onPressed: () {
+                _signIn();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Homescreen()));
+              },
+              child: Text('Log in', style: TextStyle(fontSize: 18)),
+            ),
           ),
+          SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ForgotPasswordScreen()));
-                },
-              ),
-              Text(
-                "Forget Password",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
-              )
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ForgotPasswordScreen()));
+                  },
+                  child: Text(
+                    "Forgot password?",
+                    style: TextStyle(fontSize: 18, color: Colors.blue),
+                  )),
             ],
           )
         ],

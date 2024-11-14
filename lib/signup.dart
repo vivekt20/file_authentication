@@ -1,9 +1,12 @@
-import "package:file_authentication/forget_password.dart";
-import "package:file_authentication/login.dart";
-import "package:firebase_auth/firebase_auth.dart";
-import "package:flutter/material.dart";
+import 'package:file_authentication/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:file_authentication/forget_password.dart';
+import 'package:file_authentication/login.dart';
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Signup extends StatefulWidget {
+  const Signup({super.key});
   @override
   State<Signup> createState() => _SignupState();
 }
@@ -11,6 +14,22 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+
+  Future<UserCredential?> loginwithGoogle() async {
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+          clientId:
+              "1018382543358-lot1rhgc1bepkk2ts0rsbnrinafhguiq.apps.googleusercontent.com");
+
+      final googleUser = await googleSignIn.signIn();
+      final googleAuth = await googleUser?.authentication;
+      final cred = GoogleAuthProvider.credential(
+          idToken: googleAuth?.idToken, accessToken: googleAuth?.accessToken);
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
 
   Future<void> _signUp() async {
     try {
@@ -51,95 +70,101 @@ class _SignupState extends State<Signup> {
           Container(
             height: 400,
             decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/Untitled.jpeg"),
-              ),
+                image: DecorationImage(
+                    image: AssetImage("assets/images/download (6).jpeg"),
+                    fit: BoxFit.cover)),
+          ),
+          SizedBox(height: 20),
+          SizedBox(
+            height: 40,
+            width: 300,
+            child: TextField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15))),
             ),
           ),
+          SizedBox(height: 20),
           SizedBox(
-            height: 30,
-          ),
-          SizedBox(
-              height: 40,
-              width: 300,
-              child: TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  label: Text("Email"),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15)),
-                ),
-              )),
-          SizedBox(height: 30),
-          SizedBox(
-              height: 40,
-              width: 300,
-              child: TextField(
+            height: 40,
+            width: 300,
+            child: TextField(
                 controller: _passwordController,
+                obscureText: true,
                 decoration: InputDecoration(
-                    label: Text("Password"),
+                    labelText: 'Password',
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15))),
-              )),
-          SizedBox(height: 30),
-          ElevatedButton(
+                        borderRadius: BorderRadius.circular(15)))),
+          ),
+          SizedBox(height: 55),
+          SizedBox(
+            height: 40,
+            width: 300,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 54, 57, 244),
+                  foregroundColor: Colors.white),
               onPressed: () {
-                style:
-                ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    foregroundColor: Colors.white);
-
                 _signUp();
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Login()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LoginPage()));
               },
-              child: Text("Sign Up")),
+              child: Text('Sign Up', style: TextStyle(fontSize: 18)),
+            ),
+          ),
           SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Already have an account?",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-              SizedBox(
-                width: 5,
-              ),
               Text(
-                "Log in",
-                style: TextStyle(
-                    color: Colors.orange,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
+                "Already have an Account?",
+                style: TextStyle(color: Colors.black, fontSize: 18),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(width: 10),
               GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Login()));
-                },
-              ),
-              SizedBox(),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  },
+                  child: Text(
+                    "Login",
+                    style: TextStyle(color: Colors.orange, fontSize: 18),
+                  ))
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ForgotPasswordScreen()));
+                  },
+                  child: Text(
+                    "Forgot password?",
+                    style: TextStyle(fontSize: 18, color: Colors.blue),
+                  )),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Text("Signin with"),
+                  SizedBox(width: 5),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ForgotPasswordScreen()));
+                    onTap: () async {
+                      await loginwithGoogle();
                     },
-                  ),
-                  Text(
-                    "Forget PassWord",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
+                    child: Container(
+                      height: 20,
+                      width: 20,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(
+                                  "assets/images/download (5).jpeg"))),
+                    ),
                   )
                 ],
               )
